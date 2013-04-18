@@ -1,3 +1,9 @@
 
-gorby:
-	gcc -DHAVE_STRUCT_TIMESPEC -I/opt/boxen/rbenv/versions/1.9.3-p385-perf/include/ruby-1.9.1 -L'/opt/boxen/rbenv/versions/1.9.3-p385-perf/lib' -Wl,-u,_objc_msgSend -lruby-static -lpthread -ldl -lobjc -o gorby gorby.c
+libgorby.dylib: gorby.o
+	gcc -L/Users/burke/src/g/ruby -Wl,-u,_objc_msgSend -lruby-static -lpthread -ldl -lobjc -dynamiclib -Wl,-headerpad_max_install_names,-undefined,dynamic_lookup,-compatibility_version,1.0,-current_version,1.0 -o libgorby.dylib gorby.o
+
+gorby.o: gorby.c
+	gcc -DHAVE_STRUCT_TIMESPEC -I/Users/burke/src/g/ruby/include -o gorby.o -c gorby.c
+
+gorby: gorby.o
+	gcc -L/Users/burke/src/g/ruby -Wl,-u,_objc_msgSend -lruby-static -lpthread -ldl -lobjc -o gorby gorby.o

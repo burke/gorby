@@ -1,0 +1,2 @@
+void boot_vm();
+

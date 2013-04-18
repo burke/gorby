@@ -4,12 +4,23 @@
 #include <locale.h>
 #endif
 
-int main(int argc, char **argv)
-{
-  ruby_sysinit(&argc, &argv);
+static int _argc;
+static char **_argv;
+static char *gorby = "gorby";
+void boot_vm() {
+  _argc = 0;
+  _argv = &gorby;
+  ruby_sysinit(&_argc, &_argv);
   {
     RUBY_INIT_STACK;
     ruby_init();
-    return ruby_run_node(ruby_options(argc, argv));
   }
+}
+
+int main(int argc, char **argv)
+{
+  boot_vm();
+  rb_eval_string("puts 'qqqqqwoooooo'");
+  //rb_funcall(rb_cObject, rb_intern("puts"), 1, rb_str_new2("qqwoooo"));
+  return 0;
 }
