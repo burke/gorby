@@ -1,4 +1,4 @@
-#include "ruby.h"
+#include "gorby.h"
 
 static int _argc;
 static char **_argv;
@@ -10,5 +10,19 @@ void boot_vm() {
   {
     RUBY_INIT_STACK;
     ruby_init();
+  }
+}
+
+static VALUE _gorby_eval(VALUE arg) {
+  return rb_eval_string((char*)arg);
+}
+
+VALUE gorby_eval(char *str) {
+  int exception = 0;
+  VALUE ret = rb_protect(_gorby_eval, (VALUE)str, &exception);
+  if (exception) {
+    return Qfalse;
+  } else {
+    return ret;
   }
 }
